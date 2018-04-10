@@ -1,8 +1,5 @@
 package pl.mateuszmacholl.Models.Token;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import pl.mateuszmacholl.Models.User.User;
 
 import javax.persistence.*;
@@ -15,9 +12,6 @@ import java.util.Date;
 
 @Entity
 @Inheritance
-@Getter
-@Setter
-@NoArgsConstructor
 public abstract class Token {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,14 +21,17 @@ public abstract class Token {
 	private String token;
 
 	@Column(name = "expirationDate")
-	private Date expirationDate = setExpirationDate(180);
+	private Date expirationDate = setExpirationDate();
 
 	@OneToOne(fetch = FetchType.LAZY)
 	private User user;
 
-	private Date setExpirationDate(int minutes){
+	protected Token() {
+	}
+
+	private Date setExpirationDate(){
 		Calendar now = Calendar.getInstance();
-		now.add(Calendar.MINUTE, minutes);
+		now.add(Calendar.MINUTE, 180);
 		return this.expirationDate = now.getTime();
 	}
 
@@ -44,6 +41,38 @@ public abstract class Token {
 
 	public Token(String token, User user){
 		this.token = token;
+		this.user = user;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public Date getExpirationDate() {
+		return expirationDate;
+	}
+
+	public void setExpirationDate(Date expirationDate) {
+		this.expirationDate = expirationDate;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
 		this.user = user;
 	}
 }

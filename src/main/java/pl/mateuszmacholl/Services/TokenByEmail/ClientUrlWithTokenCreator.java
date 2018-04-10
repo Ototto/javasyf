@@ -1,7 +1,5 @@
 package pl.mateuszmacholl.Services.TokenByEmail;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -10,8 +8,6 @@ import java.util.UUID;
 /**
  * Created by ggere on 19.02.2018.
  */
-@Getter
-@Setter
 @Service
 @Scope(value = "prototype")
 public class ClientUrlWithTokenCreator {
@@ -28,5 +24,21 @@ public class ClientUrlWithTokenCreator {
 
 	private String generateToken() {
 		return UUID.randomUUID().toString();
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public String getClientUrl() {
+		return clientUrl;
+	}
+
+	public void setClientUrl(String clientUrl) {
+		this.clientUrl = clientUrl;
 	}
 }

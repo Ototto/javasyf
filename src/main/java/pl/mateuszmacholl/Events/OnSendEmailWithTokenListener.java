@@ -1,7 +1,5 @@
 package pl.mateuszmacholl.Events;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.context.ApplicationEvent;
 import pl.mateuszmacholl.Models.User.User;
 import pl.mateuszmacholl.Services.TokenByEmail.TypeOfToken;
@@ -9,8 +7,7 @@ import pl.mateuszmacholl.Services.TokenByEmail.TypeOfToken;
 /**
  * Created by ggere on 20.02.2018.
  */
-@Getter
-@Setter
+
 @SuppressWarnings("serial")
 public class OnSendEmailWithTokenListener extends ApplicationEvent {
 	private String clientUrl;
@@ -23,6 +20,30 @@ public class OnSendEmailWithTokenListener extends ApplicationEvent {
 
 		this.user = user;
 		this.clientUrl = clientUrl;
+		this.typeOfToken = typeOfToken;
+	}
+
+	public String getClientUrl() {
+		return clientUrl;
+	}
+
+	public void setClientUrl(String clientUrl) {
+		this.clientUrl = clientUrl;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public TypeOfToken getTypeOfToken() {
+		return typeOfToken;
+	}
+
+	public void setTypeOfToken(TypeOfToken typeOfToken) {
 		this.typeOfToken = typeOfToken;
 	}
 }
