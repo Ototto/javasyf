@@ -1,7 +1,6 @@
 package pl.mateuszmacholl.Models.Validation;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.List;
 /**
  * Created by ggere on 04.01.2018.
  */
-@Getter
 public class ValidationError {
 
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -23,5 +21,13 @@ public class ValidationError {
 
 	public void addValidationError(String error) {
 		errors.add(error);
+	}
+
+	public List<String> getErrors() {
+		return errors;
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
 	}
 }

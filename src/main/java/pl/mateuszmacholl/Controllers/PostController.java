@@ -5,8 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import pl.mateuszmacholl.DTO.Post.PostDto;
+import pl.mateuszmacholl.DTO.Post.PostListDto;
 import pl.mateuszmacholl.Models.Post.Post;
 import pl.mateuszmacholl.Services.Post.PostService;
+import pl.mateuszmacholl.Services.User.UserService;
 import pl.mateuszmacholl.Services.Validation.ValidationErrorBuilder;
 
 import javax.validation.Valid;
@@ -21,9 +23,11 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/post")
 public class PostController {
 	private final PostService postService;
+	private final UserService userService;
 
-	public PostController(PostService postService) {
+	public PostController(PostService postService, UserService userService) {
 		this.postService = postService;
+		this.userService = userService;
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
@@ -50,10 +54,22 @@ public class PostController {
 	public ResponseEntity add(@RequestBody @Valid PostDto postDto, Errors errors){
 		if (errors.hasErrors()) {
 			return new ResponseEntity<>(ValidationErrorBuilder.fromBindingErrors(errors), HttpStatus.BAD_REQUEST);
-		} else {
+		} else if(userService.findByUsername(postDto.getUsername()) == null) {
+			return new ResponseEntity<>("There is no user with username: " + postDto.getUsername(), HttpStatus.BAD_REQUEST);
+		}
+		else {
 			Post newPost = postService.add(postService.convertToEntity(postDto));
 			PostDto newPostDto = postService.convertToDto(newPost);
 			return new ResponseEntity<>(newPostDto,HttpStatus.CREATED);
 		}
+	}
+
+	@RequestMapping(value = "/list-view", method = RequestMethod.GET)
+	public ResponseEntity listView(){
+		List<PostListDto> postsListDto = postService.findAll().stream()
+				.map(postService::convertToListDto)
+				.collect(Collectors.toList());
+
+		return new ResponseEntity<>(postsListDto, HttpStatus.OK);
 	}
 }

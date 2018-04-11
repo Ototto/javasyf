@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mateuszmacholl.Configuration.ModelMapper.MyModelMapper;
 import pl.mateuszmacholl.DTO.Post.PostDto;
+import pl.mateuszmacholl.DTO.Post.PostListDto;
 import pl.mateuszmacholl.Models.Post.Post;
 import pl.mateuszmacholl.Repositories.Post.PostRepo;
 import pl.mateuszmacholl.Repositories.User.UserRepo;
 
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +60,15 @@ public class PostService {
 		PostDto postDto = myModelMapper.modelMapper().map(post, PostDto.class);
 		postDto.setUsername(userRepo.findById(post.getUser().getId()).get().getUsername());
 		return postDto;
+	}
+
+	public PostListDto convertToListDto(Post post) {
+		PostListDto postListDto = myModelMapper.modelMapper().map(post, PostListDto.class);
+		postListDto.setUsername(userRepo.findById(post.getUser().getId()).get().getUsername());
+		postListDto.setShortContent(post.getContent().substring(0, 150));
+		postListDto.setCreatedTimeAgo(-1 * (int) ChronoUnit.MINUTES.between(Calendar.getInstance().toInstant(), post.getDate().toInstant()));
+		postListDto.setNumberOfAnswers(post.getAnswers().size());
+		return postListDto;
 	}
 
 	public Post convertToEntity(PostDto postDto){

@@ -1,9 +1,5 @@
 package pl.mateuszmacholl.Models.Answer;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import pl.mateuszmacholl.Models.Post.Post;
 import pl.mateuszmacholl.Models.User.User;
 
@@ -15,10 +11,6 @@ import javax.validation.constraints.NotNull;
  * Created by ggere on 21.03.2018.
  */
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "answer")
 public class Answer {
 	@Id
@@ -39,4 +31,39 @@ public class Answer {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "post_id")
 	private Post post;
+
+	public Answer() {
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public User getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(User author) {
+		this.author = author;
+	}
+
+	public Post getPost() {
+		return post;
+	}
+
+	public void setPost(Post post) {
+		this.post = post;
+	}
 }

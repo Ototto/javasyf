@@ -27,6 +27,16 @@ public class Post {
 
 	private Boolean solved = false;
 
+	public Integer getVotes() {
+		return votes;
+	}
+
+	public void setVotes(Integer votes) {
+		this.votes = votes;
+	}
+
+	private Integer votes = 0;
+
 	@ElementCollection
 	private List<String> tags = new ArrayList<>();
 
